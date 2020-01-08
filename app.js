@@ -1,32 +1,37 @@
-//  localStorage.setItem('name', 'hualiang');
+// define ui vars
 
-//  sessionStorage.setItem('name', 'isa');
-
-//  //localStorage.removeItem('name');
-
-//  localStorage.clear();
-
-//  console.log(localStorage.getItem('name'));
+const form = document.querySelector('#task-form');
+const taskList = document.querySelector('.collection');
+const clearBtn = document.querySelector('.clear-tasks');
+const filter = document.querySelector('#filter');
+const input = document.querySelector('#task');
 
 
+loadEventListeners();
+
+function addTask(e){
+    e.preventDefault();
+    if(input.value === ''){
+        alert('add a task');
+    }
 
 
-document.querySelector('form').addEventListener('submit', function(e){
- 
-  e.preventDefault();
-  const task = document.getElementById('task').value;
+    const li = document.createElement('li');
+    li.className = 'collection-item';
+    // create text node
+    li.appendChild(document.createTextNode(input.value));
 
-  let tasks;
+    const link = document.createElement('a');
+    link.className = 'delete-item secondary-content';
+    link.innerHTML = '<i class = \'fa fa-remove\'></a>';
+    li.appendChild(link);
+    taskList.appendChild(li);
+    input.value = '';
+}
 
-  if(localStorage.getItem('tasks') === null){
-    tasks = [];
-  } else {
-    tasks = JSON.parse(localStorage.getItem('tasks'));
-  }
-
-  tasks.push(task);
+function loadEventListeners(){
+    // add task event
+    form.addEventListener('submit', addTask);
+}
 
 
-  localStorage.setItem('tasks', JSON.stringify(tasks));
- //console.log(task);
-});
