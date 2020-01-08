@@ -32,6 +32,39 @@ function addTask(e){
 function loadEventListeners(){
     // add task event
     form.addEventListener('submit', addTask);
+    taskList.addEventListener('click', removeTask);
+    clearBtn.addEventListener('click', clearTask);
+    filter.addEventListener('keyup', filterTask);
+    
 }
 
+function removeTask(e){
+    if(e.target.parentElement.classList.contains('delete-item')){
+        if(confirm('are you sure?'))
+        e.target.parentElement.parentElement.remove();
+    }
+    
+}
+
+function clearTask(e){
+   //taskList.innerHTML = '';
+    while(taskList.firstChild){
+        taskList.removeChild(taskList.firstChild);
+    }
+    
+}
+
+function filterTask(e){
+    const text = e.target.value.toLowerCase();
+    document.querySelectorAll('.collection-item').forEach(function(task){
+        const item = task.firstChild.textContent;
+        if(item.toLocaleLowerCase().indexOf(text) != -1){
+            task.style.display = 'block';
+        } else {
+            task.style.display = 'none';
+        }
+    });
+    console.log(text);
+     
+ }
 
