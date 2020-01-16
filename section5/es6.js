@@ -1,7 +1,8 @@
 class Person{
-    constructor(fname, lname){
+    constructor(fname, lname, dob){
         this.fname = fname;
         this.lname = lname;
+        this.dob = new Date(dob);
     }
 
     greeting(){
@@ -18,16 +19,9 @@ class Person{
     }
 }
 
-class Customer extends Person{
-    constructor(fname, lname, age, phone){
-        super(fname, lname);
-        this.age = new Date(age);
-        this.phone = phone;
-    }
-
-
-}
-
-const john = new Customer('John', 'Williams', '09-03-1987', '202-631-9140');
-console.log(john);
-console.log(john.greeting());
+const mary = new Person('Mary', 'Williams', '09-03-1987');
+console.log(mary);
+console.log(mary.greeting());
+console.log(mary.getAge());
+//console.log(mary.add(1,2));
+console.log(Person.add(1,2));
