@@ -18,7 +18,7 @@ class UI {
             <td>${book.isbn}</td>
             <td><a href = \'#\' class = \'delete\'>x</a></td>
         `;
-        list.appendChild(row);
+        list.appendChild(row);        
     }
 
     alert(message, className){
@@ -29,6 +29,8 @@ class UI {
         const form = document.querySelector('#book-form');
         container.insertBefore(div, form);    
     }
+
+    
 
     clear(){
         document.getElementById('title').value = '';
@@ -43,6 +45,43 @@ class UI {
         }
     }
 }
+
+class Storage{
+    static add(book){
+        const booklist = Storage.get();
+        booklist.push(book);
+        localStorage.setItem('books', JSON.stringify(booklist));        
+    }
+    static remove(isbn){
+        const booklist = Storage.get();
+        booklist.forEach(function(b, index){
+            if(b.isbn === isbn){
+                booklist.splice(index, 1);
+            }
+        });
+        localStorage.setItem('books', JSON.stringify(booklist));        
+
+    }
+    static get(){
+        const books = localStorage.getItem('books');
+        if(books !== null){
+            return JSON.parse(books);
+        } else {
+            return [];
+        }
+    }
+
+    static display(){
+        const booklist = Storage.get();
+        const ui = new UI();
+        booklist.forEach(function(e){
+            ui.addBookToList(e);
+        });
+    
+    }
+}
+
+document.addEventListener('DOMContentLoaded', Storage.display);
 
 // Event listener
 document.getElementById("book-form").addEventListener('submit', function(e){    
@@ -62,6 +101,7 @@ document.getElementById("book-form").addEventListener('submit', function(e){
         // add book
         ui.alert('book added', 'success');
         ui.addBookToList(book);
+        Storage.add(book);
         ui.clear();
     }
     
@@ -73,8 +113,8 @@ document.getElementById("book-form").addEventListener('submit', function(e){
 })
 
 document.getElementById('book-list').addEventListener('click', function(e){
-    console.log(123);
     const ui = new UI();
     ui.delete(e.target);
+    Storage.remove(e.target.parentElement.previousElementSibling.textContent);
     e.preventDefault();
 })
